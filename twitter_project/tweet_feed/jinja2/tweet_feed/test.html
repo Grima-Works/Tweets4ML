@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Tweets4ML</title>
+		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</head>
+
+	<body style="background-color:grey;">
+		<nav class="navbar navbar-default">
+  			<div class="container-fluid">
+    	<!-- Brand and toggle get grouped for better mobile display -->
+    			<div class="navbar-header">
+      				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        				<span class="sr-only">Toggle navigation</span>
+        				<span class="icon-bar"></span>
+        				<span class="icon-bar"></span>
+        				<span class="icon-bar"></span>
+     				 </button>
+      				<a class="navbar-brand" href="#">Tweets4MachineLearning</a>
+   				</div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      			<ul class="nav navbar-nav">
+      			</ul>
+      			<ul class="nav navbar-nav navbar-right">
+     			</ul>
+    		</div><!-- /.navbar-collapse -->
+  			</div><!-- /.container-fluid -->
+		</nav>
+		<div class="container" style="background-color:white;">
+			 <h2>Dynamic Tabs</h2>
+    <p>To make the tabs toggleable, add the data-toggle="tab" attribute to each link. Then add a .tab-pane class with a unique ID for every tab and wrap them inside a div element with class .tab-content.</p>
+    <ul class="nav nav-tabs">
+      {% set the_var = [] %}
+      {% for user in name_list %}
+        {% if lens(the_var) == 0 %} 
+          <li class="active"><a data-toggle="tab" href="#{{user}}">{{user}}</a></li>
+          {% if the_var.append('test') is none %}
+          {% endif %}
+        {% else %}
+          <li><a data-toggle="tab" href="#{{user}}">{{user}}</a></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+
+    <div class="tab-content">
+      {% set the_var = [] %}
+      {% for user in name_list %}
+        {% if lens(the_var) == 0 %}
+        <div id="{{user}}" class="tab-pane fade in active">
+          {% for tweet in tweets[user] %}
+            <div class="row">
+              <div class="col-sm-2"></div>
+              <div class="col-sm-8" style="padding: 30px;background-color:lightgrey; border: 1px solid #4CAF50;">
+                <a href="https://www.twitter.com/{{ tweet.user.screen_name }}/status/{{ tweet.id }}" target="_blank">
+                      <img src="{{ tweet.user.profile_image_url }}" class="img-circle" width="64" height="64" />
+                      {{ tweet.user.name }}<br /><span>@{{ tweet.user.screen_name }} &middot; {{ twitter_date(tweet.created_at) }}</span>
+                </a>
+                <br>
+                {{urlize_tweet_text(expand_tweet_urls(tweet))|safe}}
+              </div>
+              <div class="col-sm-2"></div>
+            </div>
+          {% endfor %}
+        </div>
+          {% if the_var.append('test') is none %}
+          {% endif %}
+        {% else %}
+        <div id="{{user}}" class="tab-pane fade">
+          {% for tweet in tweets[user] %}
+            <div class="row">
+              <div class="col-sm-2"></div>
+              <div class="col-sm-8" style="padding: 30px;background-color:lightgrey; border: 1px solid #4CAF50;">
+                <a href="https://www.twitter.com/{{ tweet.user.screen_name }}/status/{{ tweet.id }}" target="_blank">
+                      <img src="{{ tweet.user.profile_image_url }}" class="img-circle" width="64" height="64" />
+                      {{ tweet.user.name }}<br /><span>@{{ tweet.user.screen_name }} &middot; {{ twitter_date(tweet.created_at) }}</span>
+                </a>
+                <br>
+                {{urlize_tweet_text(expand_tweet_urls(tweet))|safe}}
+              </div>
+              <div class="col-sm-2"></div>
+            </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+		</div>
+	</body>
+</html>

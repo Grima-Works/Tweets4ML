@@ -1,0 +1,59 @@
+{% extends "tweet_feed/header.html" %}
+{% block content %}
+	<h2>Machine Learning tweets feed</h2>
+    <ul class="nav nav-tabs">
+      {% set the_var = [] %}
+      {% for user in name_list %}
+        {% if lens(the_var) == 0 %} 
+          <li class="active"><a data-toggle="tab" href="#{{user}}">{{user}}</a></li>
+          {% if the_var.append('test') is none %}
+          {% endif %}
+        {% else %}
+          <li><a data-toggle="tab" href="#{{user}}">{{user}}</a></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+
+    <div class="tab-content">
+      {% set the_var = [] %}
+      {% for user in name_list %}
+        {% if lens(the_var) == 0 %}
+        <div id="{{user}}" class="tab-pane fade in active">
+          {% for tweet in tweets[user] %}
+            <div class="row">
+              <div class="col-sm-2"></div>
+              <div class="col-sm-8" style="padding: 30px;background-color:lightgrey; border: 1px solid #4CAF50;">
+                <a href="https://www.twitter.com/{{ tweet.user.screen_name }}/status/{{ tweet.id }}" target="_blank">
+                      <img src="{{ tweet.user.profile_image_url }}" class="img-circle" width="64" height="64" />
+                      {{ tweet.user.name }}<br /><span>@{{ tweet.user.screen_name }} &middot; {{ twitter_date(tweet.created_at) }}</span>
+                </a>
+                <br>
+                {{urlize_tweet_text(expand_tweet_urls(tweet))|safe}}
+              </div>
+              <div class="col-sm-2"></div>
+            </div>
+          {% endfor %}
+        </div>
+          {% if the_var.append('test') is none %}
+          {% endif %}
+        {% else %}
+        <div id="{{user}}" class="tab-pane fade">
+          {% for tweet in tweets[user] %}
+            <div class="row">
+              <div class="col-sm-2"></div>
+              <div class="col-sm-8" style="padding: 30px;background-color:lightgrey; border: 1px solid #4CAF50;">
+                <a href="https://www.twitter.com/{{ tweet.user.screen_name }}/status/{{ tweet.id }}" target="_blank">
+                      <img src="{{ tweet.user.profile_image_url }}" class="img-circle" width="64" height="64" />
+                      {{ tweet.user.name }}<br /><span>@{{ tweet.user.screen_name }} &middot; {{ twitter_date(tweet.created_at) }}</span>
+                </a>
+                <br>
+                {{urlize_tweet_text(expand_tweet_urls(tweet))|safe}}
+              </div>
+              <div class="col-sm-2"></div>
+            </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+{% endblock %}
